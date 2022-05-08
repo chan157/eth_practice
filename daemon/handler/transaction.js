@@ -48,9 +48,18 @@ const getLastestTransactions = async () => {
             return Promise.all(allTransactions);
         }
     } catch (error) {
-        console.log("Error : getLastestTransactions");
+        console.log(`Error : getLastestTransactions ${error}`);
     }
 };
 
+const storeTransactions = async(transactions) => {
+    transactions.map(data => Transactions.create(data));
+}
 
-module.exports = { getLastestTransactions };
+const txHandler = async() => {
+    getLastestTransactions().then((data) => {
+        storeTransactions(data);
+    })
+}
+
+module.exports = { txHandler };

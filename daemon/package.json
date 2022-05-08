@@ -4,7 +4,7 @@
   "description": "",
   "main": "daemon.js",
   "scripts": {
-    "start": "pm2 start daemon.js",
+    "start": "pm2 start daemon.js -e ./error.log -o ./out.log",
     "stop": "pm2 stop daemon.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
