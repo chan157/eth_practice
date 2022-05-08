@@ -27,3 +27,30 @@ const getLastBlockNumberFromDB = async () => {
     }
 }
 
+const getLastestTransactions = async () => {
+    try {
+        const curBlockNumEth = await web3.eth.getBlockNumber();
+        const lastBlockNumDB = await getLastBlockNumberFromDB();
+
+        if (curBlockNumEth - lastBlockNumDB <= 0) {
+            console.info("DB Update가 최신 상태입니다.");
+            
+            return [];
+        } else {
+            for (let i = lastBlockNumDB + 1; i <= curBlockNumEth; i++) {
+                const block = await web3.eth.getBlock(i);
+
+                for (let tx of block.transactions) {
+                    allTransactions.push(getTx(tx));
+                }
+            }
+            
+            return Promise.all(allTransactions);
+        }
+    } catch (error) {
+        console.log("Error : getLastestTransactions");
+    }
+};
+
+
+module.exports = { getLastestTransactions };
